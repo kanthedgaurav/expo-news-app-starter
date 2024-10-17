@@ -6,6 +6,7 @@ import SearchBar from '@/components/SearchBar'
 import axios from 'axios'
 import { NewsDataType } from '@/types'
 import BreakingNews from '@/components/BreakingNews'
+import Categories from '@/components/Categories'
 type Props = {}
 
 const Page = (props: Props) => {
@@ -40,7 +41,7 @@ const Page = (props: Props) => {
         <ActivityIndicator size="large" color="black" />
       ): ( <BreakingNews newsList={breakingNews} />) }
     
-
+      <Categories />
     </View>
   )
 }
