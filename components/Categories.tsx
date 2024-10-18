@@ -1,18 +1,47 @@
 import newsCategoryList from '@/constants/Categories'
-import React from 'react'
+import React, { useRef } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View , ScrollView } from 'react-native'
+import {Colors} from '@/constants/Colors'
+
+type Props = {
+    onCategoryChanged: (category: string) => void
+}
+
+const Categories = ({onCategoryChanged}: Props) => {
+    const scrollRef = useRef<ScrollView>(null)
+    const itemRef = useRef<TouchableOpacity[] | null[]>([])
+    const [activeIndex, setActiveIndex] = React.useState(0) 
+   
+    const handleSelectCategory = (index: number) => {
+        const selected = itemRef.current[index]
+        setActiveIndex(index)
+
+        selected?.measure((x) => {
+            scrollRef.current?.scrollTo({x: x - 20, y: 0, animated: true})
+    }
+    )
+    onCatChanged(newsCategoryList[index].slug)
+    }
 
 
-type Props = {}
 
-const Categories = (props: Props) => {
   return (
     <View>
     <Text style={styles.title}>Trending Right Now</Text>
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.itemWrapper}>
+    <ScrollView 
+    ref={scrollRef}
+    horizontal 
+    showsHorizontalScrollIndicator={false} 
+    contentContainerStyle={styles.itemWrapper}
+    >
         {newsCategoryList.map((item,index) => (
-            <TouchableOpacity key={index}>
-                <Text>{item.title}</Text>   
+            <TouchableOpacity 
+            ref={(el)=> (itemRef.current[index] =el) }
+            key={index} 
+            style={[styles.item,activeIndex === index && styles.itemActive]}
+            onPress={() => handleSelectCategory(index)}
+            >
+                <Text style={[styles.itemText, activeIndex=== index && styles.itemTextActive]}>{item.title}</Text>   
             </TouchableOpacity>
         ))}
     </ScrollView>
@@ -36,4 +65,24 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         marginBottom: 10,
     },
+    item:{
+        borderWidth: 1,
+        borderColor: 'black',
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+
+    },
+    itemText:{
+        fontSize: 16,
+        color: 'grey',
+        letterSpacing: 0.5,
+    },
+    itemActive:{
+        backgroundColor: Colors.tint,
+        borderColor: Colors.tint,
+    },
+    itemTextActive:{
+        color: 'white',
+        fontWeight: '600',
+    } ,
 })
