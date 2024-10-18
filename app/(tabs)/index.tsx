@@ -32,6 +32,9 @@ const Page = (props: Props) => {
     }
   }
 
+  const onCatChanged = (category: string) => {
+    console.log('Category:',category)
+}
       
   return (
     <View style={[styles.container, {paddingTop:safeTop}]}>
@@ -41,7 +44,7 @@ const Page = (props: Props) => {
         <ActivityIndicator size="large" color="black" />
       ): ( <BreakingNews newsList={breakingNews} />) }
     
-      <Categories />
+      <Categories onCategoryChanged={onCatChanged}/>
     </View>
   )
 }
